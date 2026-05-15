@@ -3,101 +3,627 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pomoc pri domácom násilí</title>
+<title>História mlčania — Pomoc pri domácom násilí</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --bg:#f7f5f2;
-    --card:#ffffff;
-    --text:#1f2937;
-    --muted:#6b7280;
-    --primary:#8b5cf6;
-    --secondary:#14b8a6;
-    --accent:#f59e0b;
-    --soft:#ede9fe;
-    --line:#e5e7eb;
+    --bg:#0F0F10;
+    --surface:#18181B;
+    --muted-surface:#222225;
+    --sepia:#8B6B4A;
+    --red:#B42318;
+    --red-light:#D4352A;
+    --text:#F5F5F5;
+    --text-muted:#A1A1AA;
+    --serif:'Cormorant Garamond',serif;
+    --sans:'Inter',sans-serif;
   }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:'Inter',Arial,sans-serif;background:radial-gradient(circle at top, #ffffff 0%, var(--bg) 45%, #f3efe9 100%);color:var(--text);line-height:1.65}
-  .wrap{max-width:980px;margin:0 auto;padding:28px 18px 40px}
-  .hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#6d28d9 0%,#7c3aed 45%,#0f766e 100%);color:#fff;padding:34px 26px;border-radius:28px;box-shadow:0 18px 40px rgba(17,24,39,.16)}
-  .hero::after{content:'';position:absolute;right:-30px;top:-30px;width:180px;height:180px;background:rgba(255,255,255,.12);border-radius:50%}
-  .hero::before{content:'';position:absolute;left:-50px;bottom:-70px;width:220px;height:220px;background:rgba(255,255,255,.08);border-radius:50%}
-  h1{margin:0 0 10px;font-size:clamp(2rem,4vw,3.2rem);letter-spacing:-.03em}
-  h2{margin:0 0 12px;font-size:1.45rem;letter-spacing:-.02em}
-  p{margin:0}
-  .subtitle{max-width:720px;font-size:1.04rem;color:rgba(255,255,255,.92)}
-  .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;margin-top:18px}
-  .card{background:rgba(255,255,255,.86);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.35);border-radius:24px;padding:22px;box-shadow:0 10px 30px rgba(17,24,39,.08)}
-  .section{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:22px;margin-top:18px;box-shadow:0 10px 24px rgba(17,24,39,.05)}
-  .tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:7px 12px;border-radius:999px;font-size:.9rem;margin-bottom:14px}
-  .tag b{font-weight:700}
-  .num{font-size:1.16rem;font-weight:800;color:#111827;letter-spacing:-.02em}
-  .desc{color:var(--muted);margin-top:4px}
-  .contact{padding:12px 0}
-  .contact + .contact{border-top:1px solid var(--line)}
-  .pill{display:inline-block;padding:4px 10px;border-radius:999px;background:var(--soft);color:#5b21b6;font-size:.82rem;font-weight:700;margin-bottom:10px}
-  .softbox{display:flex;gap:14px;align-items:flex-start;background:linear-gradient(180deg,#ffffff 0%,#faf7ff 100%);border:1px solid #eadcff;border-radius:20px;padding:16px}
-  .icon{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;font-size:22px;background:linear-gradient(135deg,#ede9fe,#dbeafe);color:#5b21b6}
-  ul{margin:10px 0 0;padding-left:18px}
-  li{margin:8px 0}
-  .note{margin-top:18px;background:linear-gradient(135deg, rgba(20,184,166,.12), rgba(139,92,246,.12));border:1px solid #d7f3ee;padding:16px 18px;border-radius:20px}
-  .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-  .imgcard{border-radius:18px;overflow:hidden;min-height:120px;position:relative;background:#ddd}
-  .imgcard img{width:100%;height:100%;object-fit:cover;display:block}
-  .imgcap{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(180deg,transparent,rgba(0,0,0,.72));color:#fff;font-size:.88rem}
-  .small{font-size:.95rem;color:var(--muted)}
-  @media (max-width:760px){
-    .grid,.gallery{grid-template-columns:1fr}
-    .hero{padding:26px 20px}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+
+  /* GRAIN OVERLAY */
+  body::before{
+    content:'';position:fixed;top:0;left:0;width:100%;height:100%;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events:none;z-index:9999;opacity:0.35
   }
+
+  /* PANIC EXIT */
+  #panic-exit{
+    position:fixed;bottom:2rem;right:2rem;z-index:10000;
+    background:var(--red);color:#fff;
+    font-family:var(--sans);font-size:0.75rem;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;
+    padding:0.75rem 1.25rem;border:none;cursor:pointer;border-radius:2px;
+    box-shadow:0 0 0 1px rgba(180,35,24,0.5),0 4px 20px rgba(0,0,0,0.5);
+    transition:all 0.2s
+  }
+  #panic-exit:hover{background:var(--red-light);transform:translateY(-1px)}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;width:100%;z-index:1000;
+    padding:1.5rem 3rem;display:flex;justify-content:space-between;align-items:center;
+    background:linear-gradient(to bottom,rgba(15,15,16,0.9),transparent);
+    backdrop-filter:blur(1px)
+  }
+  .nav-logo{font-family:var(--serif);font-size:1.1rem;font-weight:300;letter-spacing:0.15em;text-transform:uppercase;color:var(--text);text-decoration:none}
+  .nav-help{
+    font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--red);
+    border:1px solid rgba(180,35,24,0.4);padding:0.5rem 1rem;text-decoration:none;
+    transition:all 0.3s
+  }
+  .nav-help:hover{background:var(--red);color:#fff}
+
+  /* HERO */
+  #hero{
+    position:relative;height:100vh;min-height:600px;display:flex;align-items:center;justify-content:center;overflow:hidden
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:radial-gradient(ellipse at 30% 40%,rgba(139,107,74,0.08) 0%,transparent 60%),
+              radial-gradient(ellipse at 70% 60%,rgba(180,35,24,0.04) 0%,transparent 50%),
+              #0F0F10;
+  }
+  .hero-photo{
+    position:absolute;inset:0;
+    background-image:url('https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=60');
+    background-size:cover;background-position:center;
+    filter:grayscale(100%) brightness(0.18) contrast(1.2);
+    animation:slowzoom 20s ease-in-out infinite alternate
+  }
+  @keyframes slowzoom{from{transform:scale(1)}to{transform:scale(1.06)}}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(15,15,16,0.3) 0%,rgba(15,15,16,0.7) 60%,rgba(15,15,16,1) 100%)}
+  .hero-content{position:relative;text-align:center;padding:0 2rem;max-width:900px;animation:fadein 2s ease forwards}
+  @keyframes fadein{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+  .hero-eyebrow{font-size:0.7rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--sepia);margin-bottom:2rem;opacity:0.8}
+  .hero-title{font-family:var(--serif);font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;line-height:1.1;color:var(--text);margin-bottom:2rem;font-style:italic}
+  .hero-title span{font-style:normal;font-weight:400}
+  .hero-sub{font-size:clamp(0.9rem,1.5vw,1.1rem);font-weight:300;color:var(--text-muted);max-width:600px;margin:0 auto 3rem;line-height:1.8;letter-spacing:0.02em}
+  .hero-buttons{display:flex;gap:1.5rem;justify-content:center;flex-wrap:wrap}
+  .btn-primary{
+    font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;
+    padding:1rem 2.5rem;background:transparent;color:var(--text);
+    border:1px solid rgba(245,245,245,0.3);text-decoration:none;
+    transition:all 0.3s
+  }
+  .btn-primary:hover{background:rgba(245,245,245,0.08);border-color:rgba(245,245,245,0.6)}
+  .btn-urgent{
+    font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;
+    padding:1rem 2.5rem;background:var(--red);color:#fff;
+    border:1px solid transparent;text-decoration:none;
+    transition:all 0.3s
+  }
+  .btn-urgent:hover{background:var(--red-light)}
+  .scroll-indicator{position:absolute;bottom:2.5rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:0.5rem;opacity:0.4;animation:bounce 2s ease-in-out infinite}
+  @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(6px)}}
+  .scroll-indicator span{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted)}
+  .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--text-muted),transparent)}
+
+  /* SECTION BASE */
+  section{padding:8rem 0}
+  .container{max-width:1200px;margin:0 auto;padding:0 3rem}
+  .section-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--sepia);margin-bottom:3rem;display:block}
+
+  /* TIMELINE */
+  #timeline{background:var(--bg)}
+  .timeline-intro{max-width:600px;margin:0 auto 6rem;text-align:center}
+  .timeline-intro h2{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;font-style:italic;color:var(--text);line-height:1.2;margin-bottom:1.5rem}
+  .timeline-intro p{color:var(--text-muted);font-size:0.95rem;line-height:1.9;font-weight:300}
+  .timeline-items{position:relative;max-width:800px;margin:0 auto}
+  .timeline-line{position:absolute;left:120px;top:0;bottom:0;width:1px;background:linear-gradient(to bottom,transparent,var(--sepia),transparent);opacity:0.3}
+  .timeline-item{display:grid;grid-template-columns:100px 1px 1fr;gap:0 2.5rem;margin-bottom:5rem;opacity:0;transform:translateY(40px);transition:all 0.8s ease}
+  .timeline-item.visible{opacity:1;transform:translateY(0)}
+  .timeline-year{font-family:var(--serif);font-size:2.5rem;font-weight:300;color:var(--sepia);text-align:right;padding-top:0.2rem;font-style:italic}
+  .timeline-dot{width:1px;background:rgba(139,107,74,0.4);position:relative;display:flex;justify-content:center}
+  .timeline-dot::before{content:'';position:absolute;top:0.6rem;width:7px;height:7px;border-radius:50%;background:var(--sepia);transform:translateX(-3px)}
+  .timeline-text h3{font-family:var(--serif);font-size:1.4rem;font-weight:400;color:var(--text);margin-bottom:0.75rem;margin-top:0.3rem}
+  .timeline-text p{color:var(--text-muted);font-size:0.9rem;line-height:1.9;font-weight:300;font-style:italic}
+
+  /* STATEMENT SECTIONS */
+  .statement-section{
+    min-height:60vh;display:flex;align-items:center;justify-content:center;
+    background:var(--surface);text-align:center;padding:6rem 3rem;position:relative;overflow:hidden
+  }
+  .statement-section::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 50%,rgba(139,107,74,0.05) 0%,transparent 70%)
+  }
+  .statement-section .quote{
+    font-family:var(--serif);font-size:clamp(2rem,5vw,4rem);font-weight:300;font-style:italic;
+    color:var(--text);max-width:800px;line-height:1.25;position:relative
+  }
+  .statement-section .quote-follow{
+    font-size:clamp(1.2rem,2.5vw,2rem);font-family:var(--serif);font-weight:300;
+    color:var(--sepia);margin-top:2rem;font-style:italic
+  }
+  .statement-line{width:40px;height:1px;background:var(--sepia);margin:2.5rem auto 0;opacity:0.5}
+
+  /* WARNING SIGNS */
+  #varovania{background:var(--bg)}
+  .section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;font-style:italic;color:var(--text);margin-bottom:1rem}
+  .section-subtitle{color:var(--text-muted);font-size:0.9rem;line-height:1.8;font-weight:300;max-width:500px;margin-bottom:4rem}
+  .cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:rgba(139,107,74,0.1)}
+  .sign-card{
+    background:var(--surface);padding:2.5rem;position:relative;overflow:hidden;
+    transition:background 0.4s
+  }
+  .sign-card:hover{background:var(--muted-surface)}
+  .sign-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(to bottom,var(--sepia),transparent);opacity:0}
+  .sign-card:hover::before{opacity:1}
+  .sign-card-icon{width:2rem;height:2rem;margin-bottom:1.5rem;opacity:0.5}
+  .sign-card-icon svg{width:100%;height:100%;fill:none;stroke:var(--sepia);stroke-width:1.5}
+  .sign-card h3{font-family:var(--serif);font-size:1.25rem;font-weight:400;color:var(--text);margin-bottom:0.75rem}
+  .sign-card p{color:var(--text-muted);font-size:0.85rem;line-height:1.9;font-weight:300}
+
+  /* VOICES */
+  #hlasy{background:var(--surface);padding:8rem 0}
+  .voices-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;margin-top:4rem}
+  .voice-quote{position:relative;padding:2.5rem;border-top:1px solid rgba(139,107,74,0.2)}
+  .voice-quote::before{content:'\201E';font-family:var(--serif);font-size:5rem;color:var(--sepia);opacity:0.2;position:absolute;top:-1rem;left:2rem;line-height:1}
+  .voice-text{font-family:var(--serif);font-size:1.4rem;font-weight:300;font-style:italic;color:var(--text);line-height:1.5;margin-bottom:1.5rem}
+  .voice-source{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);opacity:0.6}
+
+  /* STATS */
+  #statistiky{background:var(--bg)}
+  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;background:rgba(245,245,245,0.04);margin-top:4rem}
+  .stat-card{background:var(--surface);padding:3rem 2rem;text-align:center;position:relative}
+  .stat-number{font-family:var(--serif);font-size:clamp(3rem,6vw,5rem);font-weight:300;color:var(--text);line-height:1;display:block;margin-bottom:1rem}
+  .stat-number span{font-style:italic}
+  .stat-desc{font-size:0.8rem;color:var(--text-muted);letter-spacing:0.05em;line-height:1.7;font-weight:300}
+  .stat-line{width:30px;height:1px;background:var(--sepia);margin:1rem auto 0;opacity:0.4}
+
+  /* HOW TO HELP */
+  #pomoc-ako{background:var(--surface)}
+  .help-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4rem;margin-top:5rem}
+  @media(max-width:700px){.help-grid{grid-template-columns:1fr;gap:3rem}}
+  .help-col{text-align:center}
+  .help-number{font-family:var(--serif);font-size:3rem;font-weight:300;color:var(--sepia);opacity:0.4;margin-bottom:1.5rem;display:block;font-style:italic}
+  .help-col h3{font-family:var(--serif);font-size:1.5rem;font-weight:400;color:var(--text);margin-bottom:1rem;font-style:italic}
+  .help-col p{color:var(--text-muted);font-size:0.85rem;line-height:1.9;font-weight:300}
+  .help-divider{width:20px;height:1px;background:var(--sepia);opacity:0.3;margin:1.5rem auto}
+
+  /* EMERGENCY */
+  #pomoc{background:var(--bg);padding:8rem 0;position:relative;overflow:hidden}
+  #pomoc::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 50% 50%,rgba(180,35,24,0.06) 0%,transparent 70%)
+  }
+  .emergency-header{text-align:center;margin-bottom:5rem}
+  .emergency-header h2{font-family:var(--serif);font-size:clamp(2rem,5vw,4rem);font-weight:300;font-style:italic;color:var(--text);margin-bottom:1rem}
+  .emergency-header p{color:var(--text-muted);font-size:0.9rem;max-width:500px;margin:0 auto;line-height:1.8}
+  .contacts-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:rgba(180,35,24,0.15);margin-bottom:4rem}
+  .contact-card{background:var(--surface);padding:2.5rem;transition:background 0.3s}
+  .contact-card:hover{background:var(--muted-surface)}
+  .contact-number{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--red-light);margin-bottom:0.5rem;display:block;letter-spacing:0.05em;font-style:italic}
+  .contact-name{font-size:0.85rem;color:var(--text);margin-bottom:0.5rem;font-weight:400;letter-spacing:0.03em}
+  .contact-desc{font-size:0.78rem;color:var(--text-muted);line-height:1.7;font-weight:300}
+  .contact-badge{display:inline-block;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red-light);border:1px solid rgba(180,35,24,0.3);padding:0.2rem 0.5rem;margin-top:0.75rem}
+  .steps-section{background:rgba(180,35,24,0.05);border:1px solid rgba(180,35,24,0.1);padding:3rem;margin-top:3rem}
+  .steps-section h3{font-family:var(--serif);font-size:1.6rem;font-weight:300;font-style:italic;color:var(--text);margin-bottom:2rem}
+  .steps-list{list-style:none;display:flex;flex-direction:column;gap:1rem}
+  .steps-list li{display:flex;gap:1.5rem;align-items:flex-start;padding-bottom:1rem;border-bottom:1px solid rgba(245,245,245,0.05)}
+  .steps-list li:last-child{border-bottom:none;padding-bottom:0}
+  .step-num{font-family:var(--serif);font-size:1.2rem;font-weight:300;color:var(--sepia);opacity:0.7;min-width:2rem;font-style:italic}
+  .step-text{font-size:0.88rem;color:var(--text-muted);line-height:1.8;font-weight:300;padding-top:0.1rem}
+
+  /* FOOTER */
+  footer{background:var(--surface);padding:4rem 0;border-top:1px solid rgba(245,245,245,0.05)}
+  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:2rem}
+  .footer-logo{font-family:var(--serif);font-size:1rem;font-weight:300;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-muted);font-style:italic}
+  .footer-note{font-size:0.75rem;color:var(--text-muted);opacity:0.5;max-width:400px;line-height:1.7}
+
+  /* RESPONSIVE */
+  @media(max-width:768px){
+    nav{padding:1.25rem 1.5rem}
+    .container{padding:0 1.5rem}
+    section{padding:5rem 0}
+    .timeline-items{padding:0}
+    .timeline-line{left:60px}
+    .timeline-item{grid-template-columns:50px 1px 1fr;gap:0 1.5rem}
+    .timeline-year{font-size:1.8rem}
+    .help-grid{grid-template-columns:1fr}
+    .footer-inner{flex-direction:column;text-align:center}
+    #panic-exit{bottom:1.5rem;right:1.5rem;font-size:0.7rem;padding:0.6rem 1rem}
+  }
+
+  /* SCROLL REVEAL */
+  .reveal{opacity:0;transform:translateY(30px);transition:all 0.9s cubic-bezier(0.16,1,0.3,1)}
+  .reveal.visible{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="hero">
-      <div class="tag">💜 <b>pomoc pri domácom násilí</b></div>
-      <h1>NIE SI NA TO SÁM/SAMA</h1>
-      <p class="subtitle">Táto stránka zhromažďuje kontakty a základné kroky pomoci pre ženy, mužov aj deti, ktorí zažívajú násilie alebo problémy doma.</p>
-      <div class="gallery">
-        <div class="imgcard"><img src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?auto=format&fit=crop&w=900&q=80" alt="Pokojný priestor"><div class="imgcap">Bezpečné miesto a podpora</div></div>
-        <div class="imgcard"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=900&q=80" alt="Ruky ľudí spolu"><div class="imgcap">Pomoc od ľudí, ktorým dôveruješ</div></div>
-        <div class="imgcard"><img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=900&q=80" alt="Stôl s papiermi"><div class="imgcap">Zaznamenaj dôležité dôkazy</div></div>
-      </div>
+
+<!-- PANIC EXIT -->
+<button id="panic-exit" onclick="window.location.href='https://www.google.com/search?q=počasie+Slovensko'" aria-label="Rýchly odchod zo stránky">⬛ Rýchly odchod</button>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">História mlčania</a>
+  <a href="#pomoc" class="nav-help">Získať pomoc</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-photo"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Osveta · Pamäť · Ochrana</p>
+    <h1 class="hero-title">Po stáročia mlčanie<br><span>chránilo páchateľa.</span></h1>
+    <p class="hero-sub">Domáce násilie nie je moderný problém. Iba naša ochota postaviť sa mu zoči-voči — áno, tá je nová.</p>
+    <div class="hero-buttons">
+      <a href="#timeline" class="btn-primary">Preskúmať históriu</a>
+      <a href="#pomoc" class="btn-urgent">Získať pomoc</a>
     </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scrollovať</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
 
-    <div class="grid">
-      <div class="section">
-        <div class="pill">Kam zavolať</div>
-        <p class="small">Vyber si číslo podľa toho, kto potrebuje pomoc.</p>
-        <div class="contact"><div class="num">0800 212 212</div><div class="desc">Národná linka pomoci pri domácom násilí, nonstop.</div></div>
-        <div class="contact"><div class="num">0911 224 777</div><div class="desc">Fenestra – pomoc a poradenstvo pri domácom násilí.</div></div>
-        <div class="contact"><div class="num">0800 800 566</div><div class="desc">Krízová linka pomoci v slovenskom jazyku, nonstop.</div></div>
-        <div class="contact"><div class="num">116 111</div><div class="desc">Linka pomoci pre deti a mladých ľudí, nonstop.</div></div>
-        <div class="contact"><div class="num">0800 191 222</div><div class="desc">Národná linka pre deti v ohrození.</div></div>
-        <div class="contact"><div class="num">116 006</div><div class="desc">Linka pomoci pre obete trestných činov.</div></div>
+<!-- TIMELINE -->
+<section id="timeline">
+  <div class="container">
+    <div class="timeline-intro reveal">
+      <span class="section-label">Historický kontext</span>
+      <h2>Násilie existovalo vždy. Svedkovia mlčali.</h2>
+      <p>Celé storočia spoločnosť považovala to, čo sa deje za zavretými dverami, za súkromnú záležitosť. Obete nemali hlas. Zákony ich nechránili. História ich zabudla.</p>
+    </div>
+    <div class="timeline-items">
+      <div class="timeline-line"></div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1800</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-text">
+          <h3>Súkromná vec rodiny</h3>
+          <p>Násilie v manželstve bolo považované za čisto súkromnú záležitosť. Zákon nezasahoval do domácnosti muža. Žena bola majetkom.</p>
+        </div>
       </div>
 
-      <div class="section">
-        <div class="softbox">
-          <div class="icon">🫶</div>
-          <div>
-            <h2>čo môžeš urobiť</h2>
-            <p class="small">Krátke kroky, ktoré môžu pomôcť hneď.</p>
-          </div>
+      <div class="timeline-item">
+        <div class="timeline-year">1920</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-text">
+          <h3>Ženy bez právnej ochrany</h3>
+          <p>Obete mali len minimálnu právnu ochranu. Rozvodové zákony boli prísne, útočiská neexistovali. „Normálna" rodinná situácia.</p>
         </div>
-        <ul>
-          <li>Choď na bezpečné miesto, ak sa dá.</li>
-          <li>Zavolaj niekomu, komu dôveruješ.</li>
-          <li>Ulož si dôležité dôkazy, napríklad správy alebo fotografie.</li>
-          <li>Obráť sa na odbornú pomoc alebo krízové centrum.</li>
-          <li>Ak ide o dieťa, povedz to dospelému, ktorému veríš.</li>
-        </ul>
-        <div class="note">Ak je niekto v priamom nebezpečí, neváhaj volať pomoc hneď. Pomoc existuje a situáciu nemusíš riešiť sám/sama.</div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1970</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-text">
+          <h3>Prvé útočiská</h3>
+          <p>Feministické hnutia otvorili prvé útočiská pre zneužívané ženy. Téma sa začala pomaly dostávať do verejného diskurzu.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">1990</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-text">
+          <h3>Zákonná kriminalizácia</h3>
+          <p>Mnohé krajiny prvýkrát kriminalizujú domáce násilie. Znásilnenie v manželstve sa stáva trestným činom. Pokrok bol pomalý, boj neustál.</p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-year">Dnes</div>
+        <div class="timeline-dot"></div>
+        <div class="timeline-text">
+          <h3>Milióny stále trpia v tichu</h3>
+          <p>Napriek pokroku sa odhaduje, že 1 z 3 žien zažije fyzické alebo sexuálne násilie. Väčšina prípadov nikdy nie je nahlásená.</p>
+        </div>
       </div>
     </div>
   </div>
+</section>
+
+<!-- STATEMENT 1 -->
+<div class="statement-section">
+  <div>
+    <p class="quote">"Väčšina obetí nikdy nenahlási zneužívanie."</p>
+    <p class="quote-follow">Pretože strach prežíva dlhšie ako modriny.</p>
+    <div class="statement-line"></div>
+  </div>
+</div>
+
+<!-- WARNING SIGNS -->
+<section id="varovania">
+  <div class="container">
+    <span class="section-label reveal">Rozpoznať nebezpečenstvo</span>
+    <h2 class="section-title reveal">Varovné signály</h2>
+    <p class="section-subtitle reveal">Domáce násilie má mnoho podôb. Fyzické stopy sú len jednou z nich — a nie vždy tou prvou.</p>
+    <div class="cards-grid reveal">
+      <div class="sign-card">
+        <div class="sign-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Emocionálne zneužívanie</h3>
+        <p>Neustále ponižovanie, kritizovanie, zosmiešňovanie. Útočník postupne ničí sebaúctu obete až do úplnej závislosti.</p>
+      </div>
+      <div class="sign-card">
+        <div class="sign-card-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        </div>
+        <h3>Izolácia</h3>
+        <p>Obeť je odstrihnutá od rodiny a priateľov. Útočník kontroluje každý kontakt, každý pohyb, každú správu.</p>
+      </div>
+      <div class="sign-card">
+        <div class="sign-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>
+        </div>
+        <h3>Finančná kontrola</h3>
+        <p>Kontrola peňazí, zákaz pracovať, závislosť na finančnej podpore. Obeť nemá zdroje na útek.</p>
+      </div>
+      <div class="sign-card">
+        <div class="sign-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <h3>Vyhrážanie</h3>
+        <p>Hrozby ublížením, hrozby odňatím detí, hrozby zverejnením súkromných informácií. Strach ako nástroj ovládania.</p>
+      </div>
+      <div class="sign-card">
+        <div class="sign-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <h3>Manipulácia</h3>
+        <p>„Nikto ti neuverí." „To si vymýšľaš." Gaslighting, prepisovanie reality, obviňovanie obete z toho, čo zažíva.</p>
+      </div>
+      <div class="sign-card">
+        <div class="sign-card-icon">
+          <svg viewBox="0 0 24 24"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/></svg>
+        </div>
+        <h3>Fyzické násilie</h3>
+        <p>Úder, strkanie, dusenie — fyzické násilie má mnoho podôb a eskaluje. Nikdy nejde o „prvý a posledný raz".</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VOICES -->
+<section id="hlasy">
+  <div class="container">
+    <span class="section-label reveal">Hlasy, ktoré neboli zaznamenané</span>
+    <h2 class="section-title reveal" style="max-width:500px">Slová, ktoré zostali nevyslovené</h2>
+    <div class="voices-grid">
+      <div class="voice-quote reveal">
+        <p class="voice-text">„Nikto by mi neuveril."</p>
+        <span class="voice-source">Anonymná výpoveď</span>
+      </div>
+      <div class="voice-quote reveal">
+        <p class="voice-text">„Povedali mi, aby som zostala ticho."</p>
+        <span class="voice-source">Anonymná výpoveď</span>
+      </div>
+      <div class="voice-quote reveal">
+        <p class="voice-text">„Hovorili, že je to normálne."</p>
+        <span class="voice-source">Anonymná výpoveď</span>
+      </div>
+      <div class="voice-quote reveal">
+        <p class="voice-text">„Bála som sa viac pomoci ako bolesť samotnej."</p>
+        <span class="voice-source">Anonymná výpoveď</span>
+      </div>
+      <div class="voice-quote reveal">
+        <p class="voice-text">„Deti. Kvôli deťom som zostala."</p>
+        <span class="voice-source">Anonymná výpoveď</span>
+      </div>
+      <div class="voice-quote reveal">
+        <p class="voice-text">„Myslela som si, že si to zaslúžim."</p>
+        <span class="voice-source">Anonymná výpoveď</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATEMENT 2 -->
+<div class="statement-section">
+  <div>
+    <p class="quote">"Ticho nie je pokoj."</p>
+    <p class="quote-follow">Ticho je niekedy najhlasnejší výkrik o pomoc.</p>
+    <div class="statement-line"></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<section id="statistiky">
+  <div class="container">
+    <span class="section-label reveal">Realita v číslach</span>
+    <h2 class="section-title reveal">Čísla, ktoré by nemali existovať</h2>
+    <div class="stats-grid reveal">
+      <div class="stat-card">
+        <span class="stat-number"><span>1 z 3</span></span>
+        <p class="stat-desc">žien zažije fyzické alebo sexuálne násilie počas svojho života</p>
+        <div class="stat-line"></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><span>73&nbsp;%</span></span>
+        <p class="stat-desc">prípadov domáceho násilia nie je nikdy nahlásených polícii</p>
+        <div class="stat-line"></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><span>5×</span></span>
+        <p class="stat-desc">vyššia pravdepodobnosť útoku pre tých, čo sa pokúsia odísť</p>
+        <div class="stat-line"></div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number"><span>7</span></span>
+        <p class="stat-desc">pokusov v priemere potrebuje obeť, než sa definitívne dostane preč</p>
+        <div class="stat-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW TO HELP -->
+<section id="pomoc-ako">
+  <div class="container">
+    <span class="section-label reveal">Čo môžeš urobiť</span>
+    <h2 class="section-title reveal">Tri kroky, ktoré zachraňujú životy</h2>
+    <div class="help-grid">
+      <div class="help-col reveal">
+        <span class="help-number">I.</span>
+        <h3>Počúvaj</h3>
+        <div class="help-divider"></div>
+        <p>Neutrálne a bez súdenia. Nehovor „ale on sa tak nezdal" alebo „určite to preháňaš". Iba počúvaj. Tvoj výber slov môže rozhodnúť, či sa zveria ďalej.</p>
+      </div>
+      <div class="help-col reveal">
+        <span class="help-number">II.</span>
+        <h3>Chráň</h3>
+        <div class="help-divider"></div>
+        <p>Pomôž zabezpečiť dôkazy — správy, fotografie, dátumy. Ak je to bezpečné, spoj obeť s odbornou pomocou. Tvoja prítomnosť sama o sebe chráni.</p>
+      </div>
+      <div class="help-col reveal">
+        <span class="help-number">III.</span>
+        <h3>Konaj</h3>
+        <div class="help-divider"></div>
+        <p>Nikdy nečakaj, kým sa situácia „zhorší dosť". Ak je niekto v bezprostrednom ohrození, volaj políciu ihneď. Mlčanie nie je neutralita — je to spoluúčasť.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EMERGENCY HELP -->
+<section id="pomoc">
+  <div class="container">
+    <div class="emergency-header reveal">
+      <span class="section-label" style="color:var(--red-light)">Pomoc je dostupná</span>
+      <h2>Nie si na to sám<span style="color:var(--red-light)">.</span> Sám<span style="color:var(--red-light)">a</span>.</h2>
+      <p>Tieto linky sú nonstop, diskrétne a bezplatné. Stačí jeden hovor.</p>
+    </div>
+    <div class="contacts-grid reveal">
+      <div class="contact-card">
+        <span class="contact-number">0800 212 212</span>
+        <p class="contact-name">Národná linka pomoci</p>
+        <p class="contact-desc">Pomoc pri domácom násilí, odborné poradenstvo, sprostredkovanie útočiska.</p>
+        <span class="contact-badge">Nonstop · Bezplatné</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-number">0911 224 777</span>
+        <p class="contact-name">Fenestra</p>
+        <p class="contact-desc">Špecializovaná pomoc a poradenstvo pri domácom násilí a násilí na ženách.</p>
+        <span class="contact-badge">Poradenstvo</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-number">0800 800 566</span>
+        <p class="contact-name">Krízová linka pomoci</p>
+        <p class="contact-desc">Krízová intervencia v slovenskom jazyku, nonstop, pre každého.</p>
+        <span class="contact-badge">Nonstop · Bezplatné</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-number">116 111</span>
+        <p class="contact-name">Linka pre deti</p>
+        <p class="contact-desc">Pomoc a podpora pre deti a mladých ľudí. Bezpečné, anonymné, nonstop.</p>
+        <span class="contact-badge">Deti · Anonymne</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-number">0800 191 222</span>
+        <p class="contact-name">Deti v ohrození</p>
+        <p class="contact-desc">Národná linka pre deti a mladých v ohrození. Pre deti aj dospelých svedkov.</p>
+        <span class="contact-badge">Nonstop · Bezplatné</span>
+      </div>
+      <div class="contact-card">
+        <span class="contact-number">158</span>
+        <p class="contact-name">Polícia SR</p>
+        <p class="contact-desc">Ak hrozí bezprostredné nebezpečenstvo, volaj políciu okamžite. Neváhaj.</p>
+        <span class="contact-badge">Núdzové volanie</span>
+      </div>
+    </div>
+
+    <div class="steps-section reveal">
+      <h3>Čo môžeš urobiť práve teraz</h3>
+      <ul class="steps-list">
+        <li>
+          <span class="step-num">01</span>
+          <span class="step-text">Choď na bezpečné miesto, ak môžeš — k susedovi, do obchodu, na verejné miesto. Bezpečnosť je prvoradá.</span>
+        </li>
+        <li>
+          <span class="step-num">02</span>
+          <span class="step-text">Zavolaj niekomu, komu dôveruješ — priateľovi, členovi rodiny, alebo na niektorú z liniek vyššie.</span>
+        </li>
+        <li>
+          <span class="step-num">03</span>
+          <span class="step-text">Ak je to bezpečné, ulož si dôkazy — správy, fotografie, dátumy. Môžu byť neskôr dôležité.</span>
+        </li>
+        <li>
+          <span class="step-num">04</span>
+          <span class="step-text">Ak ide o dieťa, povedz to dospelému, ktorému veríš, alebo zavolaj na linku 116 111.</span>
+        </li>
+        <li>
+          <span class="step-num">05</span>
+          <span class="step-text">Pamätaj: odísť je ťažké, ale nie nemožné. Pomoc existuje. Zaslúžiš si bezpečný život.</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-logo">História mlčania</span>
+      <p class="footer-note">Táto stránka slúži na osvetu a poskytovanie informácií o dostupnej pomoci. Ak ste v bezprostrednom ohrození, volajte políciu na čísle 158.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// SCROLL REVEAL
+const reveals = document.querySelectorAll('.reveal, .timeline-item');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+reveals.forEach(el => observer.observe(el));
+
+// STAGGER reveal for grids
+document.querySelectorAll('.cards-grid, .voices-grid, .stats-grid, .contacts-grid').forEach(grid => {
+  const children = grid.children;
+  Array.from(children).forEach((child, i) => {
+    child.style.opacity = '0';
+    child.style.transform = 'translateY(20px)';
+    child.style.transition = `all 0.7s cubic-bezier(0.16,1,0.3,1) ${i * 0.1}s`;
+  });
+  const gridObs = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        Array.from(entry.target.children).forEach(child => {
+          child.style.opacity = '1';
+          child.style.transform = 'translateY(0)';
+        });
+        gridObs.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  gridObs.observe(grid);
+});
+
+// TIMELINE stagger
+document.querySelectorAll('.timeline-item').forEach((item, i) => {
+  item.style.transitionDelay = `${i * 0.15}s`;
+});
+
+// COUNTER animation
+function animateCounter(el, end, suffix = '') {
+  let start = 0;
+  const duration = 2000;
+  const step = (timestamp) => {
+    if (!start) start = timestamp;
+    const progress = Math.min((timestamp - start) / duration, 1);
+    const val = Math.floor(progress * end);
+    el.textContent = val + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.textContent = end + suffix;
+  };
+  requestAnimationFrame(step);
+}
+</script>
 </body>
 </html>
